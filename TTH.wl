@@ -195,6 +195,6 @@ EndPackage[];
 
 
 TTHPrint["TTH: a package to calculate one-loop amplitude for ttH production in QCD."];
-TTHPrint["Authors: Federico Buccioni, Fabrizio Caola, Philipp Kreer, Xiao Liu, Lorenzo Tancredi"];
+TTHPrint["Authors: Federico Buccioni, Philipp Alexander Kreer, Xiao Liu, Lorenzo Tancredi"];
 TTHInitialize[];
 TTHOptions@@Options[TTHOptions];
