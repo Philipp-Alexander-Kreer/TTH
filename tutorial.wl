@@ -29,16 +29,30 @@ TTHOptions["NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/5
 (*Set the kinematics. Must use rational numbers.*)
 
 
-RKin = {s12 -> 1000000, s13 -> -145373486921728/229528275, s14 -> -14409943129571/66409125, s23 -> -116741427517764/644673025, s24 -> -111825705173728/214903925, s34 -> 203738282402836/296389125, mt2 -> 749956/25};
+FourVectorSquared[FourVector_]:=Module[{},
+If[ListQ[FourVector] && Length[FourVector]== 4, Nothing[],
+Print["Input is no four vector of the form {#1,#2,#3,#4}"]; Abort[]];
+Return[FourVector[[1]]^2-FourVector[[2]]^2-FourVector[[3]]^2-FourVector[[4]]^2];
+]
+
+Options[ToKinInput]={AllIncomingQ -> False};
+ToKinInput[InputMomentaArray_,optn:OptionsPattern[{AllIncomingQ -> False}]] := Module[
+{RKin,c, p1, p2, p3, p4, p5},
+
+{p1,p2,p3,p4,p5}= If[OptionValue[AllIncomingQ],InputMomentaArray,InputMomentaArray*{1,1,-1,-1,-1}];
+
+RKin = {s12,s13,s14,s23,s24,s34,mt2}->(FourVectorSquared/@{p1+p2,p1+p3,p1+p4,p2+p3,p2+p4,p3+p4,p3}) //Thread;
+
+Return[RKin]
+
+]
 
 
-RKinPaper = {s12 -> 1.`13.*^6, s13 -> -326469.8212801153463505084`13., s14 -> -42714.0928044675752609834`13., s23 -> -278075.5131108924984170146`13., s24 -> -431515.623767060410965933`13., s34 -> 216900.0509625359537671261`13., 
- mt2 -> 30625.0000000000603207807`13.};
-RKinPaper = RKinPaper //N 
-RKinPaper[[;;,2]]=Rationalize[RKinPaper[[;;,2]],10^-16];
+InputMomenta = {{500., 0., 0., 500.}, {500., 0., 0., -500.}, {332.89766719550397, 97.6631429012027, -264.71166403668974, 
+  -24.197154084611423}, {267.739858285764, 13.089564983094487, -55.64743824939586, 194.40076548129642}, 
+ {399.3624745187321, -110.7527078842972, 320.3591022860856, -170.20361139668498}};
 
-
-RKinPaper
+RKinPaper = ToKinInput[InputMomenta] //Rationalize[#,10^-16]&
 
 
 (* ::Subsection:: *)
@@ -51,7 +65,7 @@ counter = TTHUVCounter[RKinPaper];
 
 Print["Evaluation time: ",t0]
 TTHPackageResult = amplitude-counter;
-Print["Renormalized TTHPackage result: ", ReferencePointPaper]
+Print["Renormalized TTHPackage result: ", TTHPackageResult]
 
 ReferencePointPaper = (\[Minus] 0.75348873/\[Epsilon]^2 + 1.3691456/\[Epsilon] + 0.8261367 \[Minus] 4.9282871 \[Epsilon] + 1.581737 \[Epsilon]^2)*10^-7//Expand;
 AgreementQ = 0===(ReferencePointPaper-TTHPackageResult//Chop);
