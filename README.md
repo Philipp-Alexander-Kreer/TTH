@@ -26,9 +26,9 @@ You can check the installation by running all cells in the mathematica file **tu
 
 The package provides three functions: 
 
-1. TTHAmplitudeTreeTree $=\mathcal{N}\operatorname{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}^{(0)}\right]$
-2. TTHAmplitudeLoopTree $=2\mathcal{N}\operatorname{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}^{(1)}\right]$
-3. TTHUVCounter $=2\mathcal{N}\operatorname{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}_{\rm ct.}\right]$
+1. TTHAmplitudeTreeTree $=\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}^{(0)}\right]$
+2. TTHAmplitudeLoopTree $=2\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}^{(1)}\right]$
+3. TTHUVCounter $=2\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}_{\rm ct.}\right]$
 
 
 The default values for 
