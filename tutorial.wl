@@ -59,8 +59,15 @@ RKinPaper = ToKinInput[InputMomenta] //Rationalize[#,10^-16]&
 (*Compute the counter term and the amplitude.*)
 
 
+tree=TTHAmplitudeTreeTree[RKinPaper];
 counter = TTHUVCounter[RKinPaper];
 {t0,amplitude} = TTHAmplitudeLoopTree[RKinPaper]//AbsoluteTiming;
+
+
+TTHOptions[]
+
+
+Coefficient[amplitude,\[Epsilon],-2]/tree*"\[Alpha]S"/4/Pi /. TTHOptions[]
 
 
 Print["Evaluation time: ",t0]
@@ -70,6 +77,4 @@ Print["Renormalized TTHPackage result: ", TTHPackageResult]
 ReferencePointPaper = (\[Minus] 0.75348873/\[Epsilon]^2 + 1.3691456/\[Epsilon] + 0.8261367 \[Minus] 4.9282871 \[Epsilon] + 1.581737 \[Epsilon]^2)*10^-7//Expand;
 AgreementQ = 0===(ReferencePointPaper-TTHPackageResult//Chop);
 Print["Agreement with paper reference point: ", AgreementQ]
-
-
 

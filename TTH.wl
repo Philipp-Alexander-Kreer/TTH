@@ -7,6 +7,7 @@ TTHOptions::usage = "TTHOptions[opt] sets the options for the package.";
 TTHPrint::usage = "TTHPrint[A] prints A if silent mode is off.";
 TTHInitialize::usage = "TTHInitialize[] initializes the package.";
 TTHUVCounter::usage = "TTHUVCounter[kinematics] computes the UV counter term.";
+TTHAmplitudeTreeTree::usage = "TTHAmplitudeTreeTree[kinematics] computes the tree*tree amplitude.";
 TTHAmplitudeLoopTree::usage = "TTHAmplitudeLoopTree[kinematics] computes the one-loop*tree amplitude.";
 
 
@@ -56,6 +57,14 @@ ContractionMasterFormula = Get[FileNameJoin[{$InputPath, "ContractionMasterFormu
 time2 = AbsoluteTime[];
 TTHPrint[StringTemplate["TTHInitialize: Initialized. Time used: `1`s."][Ceiling[time2-time1]]];
 ];
+
+
+TTHAmplitudeTreeTree[RKinematics_]:=Block[{Rkin,mt2value,NTree},
+mt2value = Symbol["mt2"]/.RKinematics;
+Rkin = Thread[Keys[RKinematics] -> Values[RKinematics]/mt2value];
+NTree = SetPrecision[$yt^2*$\[Alpha]S^2*\[Pi]^2*($NC^2-1)/2/$NC/mt2value*((($NC^2-1)/2*TreeAmplSquaredCol1 + TreeAmplSquaredCol2)/.Rkin),$WorkingPrecision];
+Return[NTree]
+]
 
 
 TTHDynamicEvaluationAMFIntegrals[KinematicReplacements_, epslist_, Digits_]:=Block[{},
