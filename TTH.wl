@@ -54,6 +54,9 @@ HelicityProjectorOdd = Get[FileNameJoin[{$InputPath, "HelicityProjectorOdd.m"}]]
 HelicityFormFactorsTree = Get[FileNameJoin[{$InputPath, "HelicityFormFactorsTree.m"}]];
 HelicityFormFactorsUVCT = Get[FileNameJoin[{$InputPath, "HelicityFormFactorsUVCT.m"}]];
 ContractionMasterFormula = Get[FileNameJoin[{$InputPath, "ContractionMasterFormula.m"}]];
+TreeAmplSquaredCol1 = Get[FileNameJoin[{$InputPath, "TreeAmplSquared_CACF2.m"}]];
+TreeAmplSquaredCol2 = Get[FileNameJoin[{$InputPath, "TreeAmplSquared_CF2.m"}]];
+
 time2 = AbsoluteTime[];
 TTHPrint[StringTemplate["TTHInitialize: Initialized. Time used: `1`s."][Ceiling[time2-time1]]];
 ];

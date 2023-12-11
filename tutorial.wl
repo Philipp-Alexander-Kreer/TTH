@@ -64,12 +64,6 @@ counter = TTHUVCounter[RKinPaper];
 {t0,amplitude} = TTHAmplitudeLoopTree[RKinPaper]//AbsoluteTiming;
 
 
-TTHOptions[]
-
-
-Coefficient[amplitude,\[Epsilon],-2]/tree*"\[Alpha]S"/4/Pi /. TTHOptions[]
-
-
 Print["Evaluation time: ",t0]
 TTHPackageResult = amplitude-counter;
 Print["Renormalized TTHPackage result: ", TTHPackageResult]
