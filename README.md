@@ -36,7 +36,16 @@ The package provides three functions:
 2. TTHAmplitudeLoopTree $=2\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}^{(1)}\right]$
 3. TTHUVCounter $=2\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}_{\rm ct.}\right]$
 
-where $\mathcal{N}=4\pi \alpha_s^3 y_t^2$ is a normalization constant. The default values for 
+where $\mathcal{N}=4\pi \alpha_s^3 y_t^2$ is a normalization constant. The input is a mathematica rule for the kinematics of the form  
+
+```mathematica
+{s12 -> 1000000, s13 -> -(15393705013/47152), 
+ s14 -> -(39849685741/932940), s23 -> -(21485226445/77264), 
+ s24 -> -(48342263815/112029), s34 -> 83218910153/383674, 
+ mt2 -> 526133493760001/17179869184}
+```
+
+The default values for 
 
 1. Number of massless quarks **NF**
 2. Number of colors  **NC**
