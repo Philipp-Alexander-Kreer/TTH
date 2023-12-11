@@ -20,7 +20,13 @@ and unpack the input files
 unzip input_files.zip
 ```
 
-You can check the installation by running all cells in the mathematica file **tutorial.wl**
+You can check the installation by running all cells in the mathematica file **tutorial.wl** or using
+
+```bash 
+math -script tutorial.wl
+```
+
+in the terminal.
 
 ## Usage
 
@@ -30,8 +36,7 @@ The package provides three functions:
 2. TTHAmplitudeLoopTree $=2\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}^{(1)}\right]$
 3. TTHUVCounter $=2\mathcal{N}\text{Re}\left[\overline{\sum}(\mathcal{A}^{(0)})^{\dagger}\mathcal{A}_{\rm ct.}\right]$
 
-
-The default values for 
+where $\mathcal{N}=4\pi \alpha_s^3 y_t^2$ is a normalization constant. The default values for 
 
 1. Number of massless quarks **NF**
 2. Number of colors  **NC**
