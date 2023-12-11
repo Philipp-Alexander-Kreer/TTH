@@ -1,6 +1,6 @@
 # TTH
 
-Using this package the user can evaluate the of $gg\to t\overline{t}H$.
+Using this package the user can evaluate the tree level contracted with tree-level amplitude, bare one-loop amplitude, and UV counterterms for $gg\to t\overline{t}H$.
 
 ## Installation
 
