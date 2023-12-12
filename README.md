@@ -1,6 +1,6 @@
 # TTH
 
-Using this package the user can evaluate the tree level contracted with tree-level amplitude, bare one-loop amplitude, and UV counterterms for $gg\to t\overline{t}H$ for any given phase space point $\{s_{12}, s_{13}, s_{14}, s_{23}, s_{24}, s_{34}, m_t^2\}$
+Using this package the user can evaluate the tree level contracted with tree-level amplitude, bare one-loop amplitude, and UV counterterms for $gg\to t\overline{t}H$ for any given phase space point $\{s_{12}, s_{13}, s_{14}, s_{23}, s_{24}, s_{34}, m_t^2\}$. Computation details can be found in **put arxiv code**
 
 ## Instalation
 
@@ -8,16 +8,10 @@ Using this package the user can evaluate the tree level contracted with tree-lev
 git clone git@github.com:p-a-kreer/TTH.git
 ```
 
-change in the package directory
+Change to the package directory and unzip the input_files
 
 ```bash
-cd TTH/
-```
-
-and unpack the input files
-
-```bash
-unzip input_files.zip
+cd TTH/ && unzip input_files.zip
 ```
 
 You can check the installation by running all cells in the mathematica file **tutorial.wl** or using
@@ -60,7 +54,7 @@ can be changed by adapting the command
 THOptions["NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/500, "PrecisionGoal" -> 6, "SilentMode" -> False]
 ```
 
-
-
+For questions and comments check out **alphaxiv link** and do not hesitate to contact the authors: 
+Federico Buccioni, Philipp Alexander Kreer, Xiao Liu, and Lorenzo Tancredi
 
 
