@@ -16,13 +16,13 @@ Get[FileNameJoin[{current, "TTH.wl"}]];
 (*(Optional) You can set the options for the package using TTHOptions. Available options include*)
 (*	"NF" - the number of massless quarks, 5 by default*)
 (*	"NC" - the number of colors, 3 by default*)
-(*	"yt" - the Yukawa coupling, 82979727/120018599 (~0.691) by default*)
+(*	"yt" - the Yukawa coupling, 82979727/120018599 (~0.6914) by default*)
 (*	"\[Alpha]S" - the strong coupling, 59/500 (~0.118) by default*)
-(*	"PrecisionGoal" - precision goal for the final results, 6 by default*)
+(*	"PrecisionGoal" - precision goal for the final results, 8 by default*)
 (*	"SilentMode" - silent mode (won't print any message during the computations), False by default*)
 
 
-TTHOptions["NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/500, "PrecisionGoal" -> 6, "SilentMode" -> False]
+TTHOptions["NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/500, "PrecisionGoal" -> 8, "SilentMode" -> False]
 
 
 (* ::Subsection:: *)
@@ -59,16 +59,15 @@ RKinPaper = ToKinInput[InputMomenta] //Rationalize[#,10^-16]&
 (*Compute the counter term and the amplitude.*)
 
 
-tree=TTHAmplitudeTreeTree[RKinPaper];
+tree = TTHAmplitudeTreeTree[RKinPaper];
 counter = TTHUVCounter[RKinPaper];
-{t0,amplitude} = TTHAmplitudeLoopTree[RKinPaper]//AbsoluteTiming;
+{t0, amplitude} = TTHAmplitudeLoopTree[RKinPaper]//AbsoluteTiming;
 
 
 Print["Evaluation time: ",t0]
-TTHPackageResult = amplitude-counter;
+TTHPackageResult = SetPrecision[amplitude-counter, 8];
 Print["Renormalized TTHPackage result: ", TTHPackageResult]
 
-ReferencePointPaper = (\[Minus] 0.75348873/\[Epsilon]^2 + 1.3691456/\[Epsilon] + 0.8261367 \[Minus] 4.9282871 \[Epsilon] + 1.581737 \[Epsilon]^2)*10^-7//Expand;
-AgreementQ = 0===(ReferencePointPaper-TTHPackageResult//Chop);
+ReferencePointPaper = (\[Minus] 0.75348873/\[Epsilon]^2 + 1.3691456/\[Epsilon] + 0.82613668 \[Minus] 4.9282871 \[Epsilon] + 1.5817369 \[Epsilon]^2)*10^-7//Expand;
+AgreementQ = 0===(ReferencePointPaper-TTHPackageResult//Chop[#, 10^-10]&);
 Print["Agreement with paper reference point: ", AgreementQ]
-

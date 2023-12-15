@@ -21,7 +21,7 @@ $InputPath = FileNameJoin[{$Current, "input_files"}];
 $AMFlowPath = FileNameJoin[{$Current, "one_loop_amflow"}];
 
 
-Options[TTHOptions] = {"NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/500, "PrecisionGoal" -> 6, "SilentMode" -> False};
+Options[TTHOptions] = {"NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/500, "PrecisionGoal" -> 8, "SilentMode" -> False};
 TTHOptions[opt___]:=Block[{},
 If[MemberQ[Keys[{opt}], "NF"], $NF = "NF"/.{opt}];
 If[MemberQ[Keys[{opt}], "NC"], $NC = "NC"/.{opt}];
@@ -29,8 +29,8 @@ If[MemberQ[Keys[{opt}], "yt"], $yt = "yt"/.{opt}];
 If[MemberQ[Keys[{opt}], "\[Alpha]S"], $\[Alpha]S = "\[Alpha]S"/.{opt}];
 If[MemberQ[Keys[{opt}], "PrecisionGoal"],
 $PrecisionGoal = "PrecisionGoal"/.{opt};
-$WorkingPrecision = ($PrecisionGoal+3)*5;
-$EpsList = 10^-($PrecisionGoal+3)+10^-($PrecisionGoal+5)Range[5]];
+$WorkingPrecision = 2*$PrecisionGoal+20;
+$EpsList = 10^-(Ceiling[$PrecisionGoal/4]+2)+10^-(Ceiling[$PrecisionGoal/4]+4)Range[8]];
 If[MemberQ[Keys[{opt}], "SilentMode"], $SilentMode = "SilentMode"/.{opt}];
 
 PrintOptions[TTHOptions, $CTX];
@@ -41,7 +41,7 @@ TTHPrint[a___]:=If[$SilentMode=!=True, Print[a], Hold[a]];
 PrintOptions[func_, ctx_]:=TTHPrint[func -> Thread[Keys[Options[func]] -> ToExpression[ctx<>"$"<>#&/@Keys[Options[func]]]]];
 
 
-FitEps[rule_,leading_]:=Fit[Transpose[{Keys[rule], Values[rule]}], Power[ep, leading+Range[0, Length[rule]-1]], ep];
+FitEps[rule_, leading_, ending_]:=Fit[Transpose[{Keys[rule], Values[rule]}], Power[ep, leading+Range[0, Length[rule]-1]], ep]/.Power[ep, a_]:>0/;a>ending;
 
 
 TTHInitialize[]:=Block[{time1,time2},
@@ -65,9 +65,9 @@ TTHPrint[StringTemplate["TTHInitialize: Initialized. Time used: `1`s."][Ceiling[
 TTHAmplitudeTreeTree[RKinematics_]:=Block[{Rkin,mt2value,NTree},
 mt2value = Symbol["mt2"]/.RKinematics;
 Rkin = Thread[Keys[RKinematics] -> Values[RKinematics]/mt2value];
-NTree = SetPrecision[$yt^2*$\[Alpha]S^2*\[Pi]^2*($NC^2-1)/2/$NC/mt2value*((($NC^2-1)/2*TreeAmplSquaredCol1 + TreeAmplSquaredCol2)/.Rkin),$WorkingPrecision];
+NTree = SetPrecision[$yt^2*$\[Alpha]S^2*\[Pi]^2*($NC^2-1)/2/$NC/mt2value*((($NC^2-1)/2*TreeAmplSquaredCol1 + TreeAmplSquaredCol2)/.Rkin), $WorkingPrecision];
 Return[NTree]
-]
+];
 
 
 TTHDynamicEvaluationAMFIntegrals[KinematicReplacements_, epslist_, Digits_]:=Block[{},
@@ -80,7 +80,7 @@ Quiet[Get[FileNameJoin[{$AMFlowPath, "results"}]]]
 NEvalHelicityFormFactors[RKinematics_]:=Block[{$MinPrecision=$WorkingPrecision,$MaxPrecision=$WorkingPrecision,time1,time2,rule,ibp,kinmat,peven, podd,ints,allints,allkin,ffactors},
 TTHPrint["NEvalHelicityFormFactors: substituting the kinematics into the coefficients."];
 time1 = AbsoluteTime[];
-rule = Thread[Keys[RKinematics] -> N[Values[RKinematics], $WorkingPrecision]];
+rule = Thread[Keys[RKinematics] -> SetPrecision[Values[RKinematics], $WorkingPrecision]];
 ibp = IBPMatrix/.rule;
 kinmat = KinematicMatrices/.rule;
 peven = HelicityProjectorEven/.rule;
@@ -159,7 +159,7 @@ OLNormalization*2*Re[ContractedAmplitude]
 ];
 
 
-TTHAmplitudeLoopTree[RKinematics_]:=N[Block[{mt2value,Rkin,$MinPrecision=$WorkingPrecision,$MaxPrecision=$WorkingPrecision,time1,time2,ffactors,ffactorstree,amp},
+TTHAmplitudeLoopTree[RKinematics_]:=SetPrecision[Block[{mt2value,Rkin,$MinPrecision=$WorkingPrecision,$MaxPrecision=$WorkingPrecision,time1,time2,ffactors,ffactorstree,amp},
 TTHPrint["TTHAmplitudeLoopTree: computing form factors at one loop level."];
 mt2value = Symbol["mt2"]/.RKinematics;
 Rkin = Thread[Keys[RKinematics] -> Values[RKinematics]/mt2value];
@@ -180,23 +180,23 @@ amp = Table[mt2value^-1*ReconstructNormalization[1/(Gamma[1+$EpsList[[i]]])*NCon
 time2 = AbsoluteTime[];
 TTHPrint[StringTemplate["TTHAmplitudeLoopTree: contracted. Time used: `1`s."][Ceiling[time2-time1]]];
 
-FitEps[Thread[$EpsList -> amp], -2]
+FitEps[Thread[$EpsList -> amp], -2, 2]
 ], $PrecisionGoal];
 
 
-TTHUVCounter[RKinematics_]:=N[Block[{mt2value,Rkin,$MinPrecision=$WorkingPrecision,$MaxPrecision=$WorkingPrecision,time1,time2,NUVCT,NTree,TreeLevelContractedUVCT},
+TTHUVCounter[RKinematics_]:=SetPrecision[Block[{mt2value,Rkin,$MinPrecision=$WorkingPrecision,$MaxPrecision=$WorkingPrecision,time1,time2,NUVCT,NTree,TreeLevelContractedUVCT},
 TTHPrint["TTHUVCounter: computing counter term."];
 mt2value = Symbol["mt2"]/.RKinematics;
 Rkin = Thread[Keys[RKinematics] -> Values[RKinematics]/mt2value];
 time1 = AbsoluteTime[];
 NUVCT = HelicityFormFactorsUVCT/.Rkin;
-NUVCT = N[NUVCT/.ep->#&/@$EpsList, $WorkingPrecision];
+NUVCT = SetPrecision[NUVCT/.ep->#&/@$EpsList, $WorkingPrecision];
 NTree = NEvalHelicityFormFactorsTree[Rkin];
 TreeLevelContractedUVCT = Table[mt2value^-1*ReconstructNormalization[NContractLoopWithTree[Rkin, NUVCT[[i]], NTree]], {i, Length[$EpsList]}];
 time2 = AbsoluteTime[];
 TTHPrint[StringTemplate["TTHUVCounter: computed. Time used: `1`s."][Ceiling[time2-time1]]];
 
-FitEps[Thread[$EpsList -> TreeLevelContractedUVCT], -2]
+FitEps[Thread[$EpsList -> TreeLevelContractedUVCT], -2, 2]
 ], $PrecisionGoal];
 
 
