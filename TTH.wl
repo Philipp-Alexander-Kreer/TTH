@@ -9,6 +9,7 @@ TTHInitialize::usage = "TTHInitialize[] initializes the package.";
 TTHUVCounter::usage = "TTHUVCounter[kinematics] computes the UV counter term.";
 TTHAmplitudeTreeTree::usage = "TTHAmplitudeTreeTree[kinematics] computes the tree*tree amplitude.";
 TTHAmplitudeLoopTree::usage = "TTHAmplitudeLoopTree[kinematics] computes the one-loop*tree amplitude.";
+NHelicityFormFactors::usage = "NHelicityFormFactors[kinematics] computes the helicity form factors.";
 
 
 Begin["`Private`"];
@@ -109,6 +110,20 @@ TTHPrint[StringTemplate["NEvalHelicityFormFactors: done. Time used: `1`s."][Ceil
 
 ffactors
 ];
+
+
+NEvalHelicityFormFactorsFit[RKinematics_]:=SetPrecision[Block[{$MinPrecision=$WorkingPrecision, $MaxPrecision=$WorkingPrecision, ffactors}, 
+ffactors = NEvalHelicityFormFactors[RKinematics];
+Table[FitEps[Thread[$EpsList -> ffactors[[All, i, j, k]]], -2, 2], {i, Length[ffactors[[1]]]}, {j, Length[ffactors[[1, i]]]}, {k, Length[ffactors[[1, i, j]]]}]], $PrecisionGoal];
+
+NHelicityFormFactors[RKinematics_]:=Module[ {HelicityFormFactorsEven, HelicityFormFactorsOdd,ColMatrix}, 
+{HelicityFormFactorsEven, HelicityFormFactorsOdd}=NEvalHelicityFormFactorsFit[RKinematics];
+
+ColMatrix = ConstantArray[{Global`NF*Global`TATB, Global`NC^-1*Global`TATB, Global`TATB, Global`NC*Global`TATB, Global`NF*Global`TBTA, Global`NC^-1*Global`TBTA, Global`TBTA, Global`NC*Global`TBTA,Global`DeltaAB},8]//Transpose;
+ HelicityFormFactorsEven = HelicityFormFactorsEven * ColMatrix//Total;
+ HelicityFormFactorsOdd  = HelicityFormFactorsOdd  * ColMatrix//Total;
+ Return[HelicityFormFactorsEven+Global`tr5*HelicityFormFactorsOdd]
+   ]
 
 
 NEvalHelicityFormFactorsTree[RKinematics_]:=HelicityFormFactorsTree/.RKinematics;

@@ -71,3 +71,10 @@ Print["Renormalized TTHPackage result: ", TTHPackageResult]
 ReferencePointPaper = (\[Minus] 0.75348873/\[Epsilon]^2 + 1.3691456/\[Epsilon] + 0.82613668 \[Minus] 4.9282871 \[Epsilon] + 1.5817369 \[Epsilon]^2)*10^-7//Expand;
 AgreementQ = 0===(ReferencePointPaper-TTHPackageResult//Chop[#, 10^-10]&);
 Print["Agreement with paper reference point: ", AgreementQ]
+
+
+(* ::Subsection:: *)
+(*Computation of Helicity Form Factors Eq. (3.26)*)
+
+
+HelicityFormFactors = NHelicityFormFactors[RKinPaper];
