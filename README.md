@@ -1,6 +1,6 @@
 # TTH
 
-Using this package the user can evaluate the tree level contracted with tree-level amplitude, bare one-loop amplitude, and UV counterterms for $gg\to t\overline{t}H$ for any given phase space point $\{s_{12}, s_{13}, s_{14}, s_{23}, s_{24}, s_{34}, m_t^2\}$. Computation details can be found in **put arxiv code**
+Using this package the user can evaluate the tree level contracted with tree-level amplitude, bare one-loop amplitude, and UV counterterms for $gg\to t\overline{t}H$ for any given phase space point $\{s_{12}, s_{13}, s_{14}, s_{23}, s_{24}, s_{34}, m_t^2\}$. Computation details can be found [here](https://arxiv.org/abs/2312.10015)
 
 ## Installation
 
@@ -54,7 +54,20 @@ can be changed by adapting the command
 THOptions["NF" -> 5, "NC" -> 3, "yt" -> 82979727/120018599, "\[Alpha]S" -> 59/500, "PrecisionGoal" -> 6, "SilentMode" -> False]
 ```
 
-For questions and comments check out **alphaxiv link** and do not hesitate to contact the authors: 
+## Evaluation of Helicity Form Factors
+
+It is possible to evaluate the unrenormalized helicity formfactors $\mathcal{F}$ with the function NHelicityFormFactors. Similar to the previous functions this function takes a list of kinematic replacement rules and returns the helicity formfactors. Note that, the helicity form factors are computed for rescaled kinematics (see Sec. 2), where $m_t=1$. 
+
+The output is a vector of $8$ entries, where each entry corresponds to one helicity form factor. In addition to the quantities above, there are four additional variables
+
+1. TATB, TBTA, DeltaAB = $|\mathcal{C}_1\rangle, |\mathcal{C}_2\rangle, |\mathcal{C}_3\rangle$
+2. tr5 = $tr_5$ 
+
+
+
+
+
+For questions and comments check out or comment [here](https://alphaxiv.org/abs/2312.10015) and do not hesitate to contact the authors: 
 Federico Buccioni, Philipp Alexander Kreer, Xiao Liu, and Lorenzo Tancredi
 
 
